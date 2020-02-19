@@ -1,1 +1,1 @@
-web: guincorn src/main:app
+web: guincorn main:app

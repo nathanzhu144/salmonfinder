@@ -1,6 +1,13 @@
 from datetime import date
 from collections import defaultdict
 from get_requests import *
+from flask import Flask
+
+app = Flask(__name__)
+@app.route('/')
+def hello_world():
+    """Print 'Hello, world!' as the response body."""
+    return 'Hello, world!'
 
 class Food:
     # Ex. "Cedar planked salmon", "salmon"
@@ -50,6 +57,7 @@ class DiningInfo:
 
 
 if __name__ == "__main__":
+    app.run()
     interesting_foods = ["salmon", "korean", "bbq", "steak"]
     bad_foods = ["white fish", "catfish"]
     d = DiningInfo(interesting_foods)
