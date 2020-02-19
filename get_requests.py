@@ -1,3 +1,7 @@
+# Nathan Zhu
+# Sources: Sme code from https://realpython.com/python-web-scraping-practical-introduction/
+# 
+
 import requests
 
 from requests import get

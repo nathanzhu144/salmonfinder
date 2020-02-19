@@ -2,6 +2,8 @@ from datetime import date
 from collections import defaultdict
 from get_requests import *
 from flask import Flask
+import smtplib
+import ssl
 
 app = Flask(__name__)
 @app.route('/')
@@ -48,11 +50,14 @@ class DiningInfo:
             self.find_string_in_list(all_food, dh, self.interesting_foods)
                 
     def print_table(self):
+        ret = []
         for dh in self.table:
             for food in self.table[dh]:
                 foodnm, typef, dhname = food.food_item, food.type_food, food.dining_hall
                 printstr = dhname + " has " + foodnm + " in category " + typef + "."
-                print(printstr)
+                ret.append(printstr)
+
+        return ret
             
 
 
@@ -69,6 +74,26 @@ if __name__ == "__main__":
     d2 = DiningInfo(bad_foods)
     d2.find_all_interesting_dishes()
     d2.print_table()
-    app.run()
+
+
+
+    port = 465  # For SSL
+    smtp_server = "smtp.mail.yahoo.com"
+    sender_email = "dininghallapp@yahoo.com"  # Enter your address
+    receiver_email = "znathan@umich.edu"  # Enter receiver address
+    password = str(open("password.txt"))
+    message = """\
+    Subject: Hi there
+
+    This message is sent from Python."""
+
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, message)
+
+    # app.run()
     # print(d.get_table())
     # today = date.today()
+
+    
