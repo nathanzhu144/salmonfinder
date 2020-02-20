@@ -160,7 +160,10 @@ def hello_world():
     e = Email("tinyfishsalmon@gmail.com")
     e.send_emails(ret, ["nathanzhu12@gmail.com"])
 
+    # none
     return "<h1> Hello! </h1>"
+
+
 
 if __name__ == '__main__':
     app.run()
