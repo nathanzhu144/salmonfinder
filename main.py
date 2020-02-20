@@ -86,7 +86,7 @@ class Email:
     def send_email(self, html, recipient):
         today = str(date.today().strftime('%Y-%m-%d'))
         me = self.gmail
-        my_password = str(open("password.txt").read())
+        my_password = str(open("password2.txt").read())
         you = recipient
 
 
@@ -157,7 +157,7 @@ def hello_world():
     d = DiningInfo(interesting_foods)
     d.find_all_interesting_dishes()
     ret = d.get_table()
-    e = Email("nathanzhu12@gmail.com")
+    e = Email("tinyfishsalmon@gmail.com")
     e.send_emails(ret, ["nathanzhu12@gmail.com"])
 
     return "<h1> Hello! </h1>"
