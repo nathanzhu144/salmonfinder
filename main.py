@@ -1,17 +1,18 @@
 from datetime import date
 from collections import defaultdict
 from get_requests import *
-from flask import Flask
 
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-app = Flask(__name__)
-@app.route('/')
 
-def hello_world():
-    """Print 'Hello, world!' as the response body."""
-    return 'Hello, world!'
+from flask import Flask
+
+import sqlite3
+from sqlite3 import Error
+
+app = Flask(__name__)
+app.config["DEBUG"] = True
 
 class Food:
     # Ex. "Cedar planked salmon", "salmon"
@@ -29,7 +30,7 @@ class DiningInfo:
         self.interesting_foods = interesting_foods_in
 
     def get_html_bursley(self):
-        d = DiningInfo(interesting_foods)
+        d = DiningInfo(self.interesting_foods)
         raw_html = simple_get("https://dining.umich.edu/menus-locations/dining-halls/bursley")
         print(BeautifulSoup(raw_html, 'html.parser').prettify())
 
@@ -83,7 +84,7 @@ class Email:
         return html
 
     def send_email(self, html, recipient):
-        today = str(date)
+        today = str(date.today().strftime('%Y-%m-%d'))
         me = self.gmail
         my_password = str(open("password.txt").read())
         you = recipient
@@ -111,16 +112,71 @@ class Email:
         for email in emails:
             self.send_email(c, email)
 
-        
+def create_connection(db_file):
+    """ create a database connection to a SQLite database """
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+        print(sqlite3.version)
+    except Error as e:
+        print(e)
+    return conn   
 
-if __name__ == "__main__":
-    
+def create_tuple(conn, email_, food_):
+    """
+    Create a new project into the projects table
+    :param conn:
+    :param project:
+    :return: project id
+    """
+    sql = "INSERT INTO PEOPLE (EMAIL, FOOD) VALUES(\""+ str(email_) + "\",\"" + str(food_) + "\");"
+
+    print(sql)
+    cur = conn.cursor()
+    cur.execute(sql)
+
+def select_tuple(conn, email_):
+    sql = "SELECT p.EMAIL, p.FOOD FROM PEOPLE p WHERE p.EMAIL = \"" + str(email_) + "\";"
+
+    cur = conn.cursor()
+    ret = cur.execute(sql)
+    fin = ret.fetchall()
+    print(fin)
+ 
+
+@app.route('/', methods=['GET'])
+def hello_world():
+    conn = create_connection(r"pythonsqlite.db")
+    cur = conn.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS PEOPLE(EMAIL TEXT PRIMARY KEY, FOOD TEXT NOT NULL);")
+    create_tuple(conn, "znathan@umich.edu", "bbq")
+    select_tuple(conn, "znathan@umich.edu")
+
+
     interesting_foods = ["salmon", "korean", "bbq", "steak"]
     d = DiningInfo(interesting_foods)
     d.find_all_interesting_dishes()
     ret = d.get_table()
     e = Email("nathanzhu12@gmail.com")
-    e.send_emails(ret, ["nathanzhu12@gmail.com", "znathan@umich.edu", "hsatam@umich.edu", "chenreny@umich.edu"])
+    e.send_emails(ret, ["nathanzhu12@gmail.com"])
+
+    return "Done"
+
+if __name__ == '__main__':
+    app.run()
+    # conn = create_connection(r"pythonsqlite.db")
+    # cur = conn.cursor()
+    # cur.execute("CREATE TABLE IF NOT EXISTS PEOPLE(EMAIL TEXT PRIMARY KEY, FOOD TEXT NOT NULL);")
+    # create_tuple(conn, "znathan@umich.edu", "bbq")
+    # select_tuple(conn, "znathan@umich.edu")
+
+
+    # interesting_foods = ["salmon", "korean", "bbq", "steak"]
+    # d = DiningInfo(interesting_foods)
+    # d.find_all_interesting_dishes()
+    # ret = d.get_table()
+    # e = Email("nathanzhu12@gmail.com")
+    # e.send_emails(ret, ["nathanzhu12@gmail.com"])
 
 
     # d2 = DiningInfo(bad_foods)
