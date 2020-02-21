@@ -161,8 +161,8 @@ def hello_world():
 def hello_name(name):
     return "Hello {}!".format(name)
 
-@app.route('/foods')
-def find_foods(name):
+@app.route('/<foods>')
+def find_foods(foods):
     interesting_foods = ["salmon", "korean", "bbq", "steak", "tender"]
     d = DiningInfo(interesting_foods)
     d.find_all_interesting_dishes()
