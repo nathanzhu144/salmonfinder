@@ -153,18 +153,22 @@ def hello_world():
     select_tuple(conn, "znathan@umich.edu")
 
 
+    # noneconfigconfigconfigconfig
+    # return render_template('index.html')
+    return "HI"
+
+@app.route('/<name>')
+def hello_name(name):
+    return "Hello {}!".format(name)
+
+@app.route('/foods>')
+def find_foods(name):
     interesting_foods = ["salmon", "korean", "bbq", "steak", "tender"]
     d = DiningInfo(interesting_foods)
     d.find_all_interesting_dishes()
     ret = d.get_table()
     e = Email("tinyfishsalmon@gmail.com")
     e.send_emails(ret, ["nathanzhu12@gmail.com"])
-
-    # noneconfigconfigconfigconfig
-    # return render_template('index.html')
-    return "HI"
-
-
 
 if __name__ == '__main__':
     app.run()
