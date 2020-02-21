@@ -161,7 +161,7 @@ def hello_world():
 def hello_name(name):
     return "Hello {}!".format(name)
 
-@app.route('/foods>')
+@app.route('/foods')
 def find_foods(name):
     interesting_foods = ["salmon", "korean", "bbq", "steak", "tender"]
     d = DiningInfo(interesting_foods)
@@ -169,6 +169,7 @@ def find_foods(name):
     ret = d.get_table()
     e = Email("tinyfishsalmon@gmail.com")
     e.send_emails(ret, ["nathanzhu12@gmail.com"])
+    return "hi"
 
 if __name__ == '__main__':
     app.run()
