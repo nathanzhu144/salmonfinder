@@ -153,15 +153,16 @@ def hello_world():
     select_tuple(conn, "znathan@umich.edu")
 
 
-    interesting_foods = ["salmon", "korean", "bbq", "steak"]
+    interesting_foods = ["salmon", "korean", "bbq", "steak", "tender"]
     d = DiningInfo(interesting_foods)
     d.find_all_interesting_dishes()
     ret = d.get_table()
     e = Email("tinyfishsalmon@gmail.com")
     e.send_emails(ret, ["nathanzhu12@gmail.com"])
 
-    # none
-    return render_template('index.html')
+    # noneconfigconfigconfigconfig
+    # return render_template('index.html')
+    return "HI"
 
 
 
