@@ -6,7 +6,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from flask import Flask
+from flask import Flask, render_template
 
 import sqlite3
 from sqlite3 import Error
@@ -161,7 +161,7 @@ def hello_world():
     e.send_emails(ret, ["nathanzhu12@gmail.com"])
 
     # none
-    return "<h1> Hello! </h1>"
+    return render_template('index.html')
 
 
 
