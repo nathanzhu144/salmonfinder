@@ -6,12 +6,12 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from flask import Flask, render_template
+from flask import Flask, render_template, make_response, g
 
 import sqlite3
 from sqlite3 import Error
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 app.config["DEBUG"] = True
 
 class Food:
@@ -151,6 +151,7 @@ def hello_world():
     cur.execute("CREATE TABLE IF NOT EXISTS PEOPLE(EMAIL TEXT PRIMARY KEY, FOOD TEXT NOT NULL);")
     create_tuple(conn, "znathan@umich.edu", "bbq")
     select_tuple(conn, "znathan@umich.edu")
+    return render_template("index.html")
 
 
     # noneconfigconfigconfigconfig
@@ -161,8 +162,8 @@ def hello_world():
 def hello_name(name):
     return "Hello {}!".format(name)
 
-@app.route('/user/<foods>')
-def find_foods(foods):
+@app.route('/updatereq/<name>')
+def find_foods(name):
     interesting_foods = ["salmon", "korean", "bbq", "steak", "tender"]
     d = DiningInfo(interesting_foods)
     d.find_all_interesting_dishes()
