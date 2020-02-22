@@ -156,7 +156,7 @@ def hello_world():
 
     # noneconfigconfigconfigconfig
     # return render_template('index.html')
-    return render_template("home.html")
+    return render_template("home.html", title="Temp", description="Hello, this is a dsecr")
 
 @app.route('/<name>')
 def hello_name(name):
