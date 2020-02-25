@@ -151,10 +151,22 @@ def hello_world():
     cur.execute("CREATE TABLE IF NOT EXISTS PEOPLE(EMAIL TEXT PRIMARY KEY, FOOD TEXT NOT NULL);")
     create_tuple(conn, "znathan@umich.edu", "bbq")
     select_tuple(conn, "znathan@umich.edu")
-    return render_template("index.html")
+
+    user = {'username': 'Miguel'}
+    posts = [
+        {
+            'author': {'username': 'John'},
+            'body': 'Beautiful day in Portland!'
+        },
+        {
+            'author': {'username': 'Susan'},
+            'body': 'The Avengers movie was so cool!'
+        }
+    ]
+    return render_template('index.html', title='Home', user=user, posts=posts)
 
 
-    # noneconfigconfigconfigconfig
+
     # return render_template('index.html')
     return render_template("home.html", title="Temp", description="Hello, this is a dsecr")
 
