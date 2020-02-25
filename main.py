@@ -1,7 +1,7 @@
 from datetime import date
 from collections import defaultdict
 from get_requests import *
-
+from config import Config
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -10,9 +10,12 @@ from flask import Flask, render_template, make_response, g
 
 import sqlite3
 from sqlite3 import Error
+import routes
 
 app = Flask(__name__, template_folder="templates")
-app.config["DEBUG"] = True
+app.config.from_object(Config)
+
+
 
 class Food:
     # Ex. "Cedar planked salmon", "salmon"
@@ -152,15 +155,15 @@ def hello_world():
     create_tuple(conn, "znathan@umich.edu", "bbq")
     select_tuple(conn, "znathan@umich.edu")
 
-    user = {'username': 'Miguel'}
+    user = {'username': 'Nathan'}
     posts = [
         {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
+            'author': {'username': 'Adeeb'},
+            'body': 'Coconut husk'
         },
         {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
+            'author': {'username': 'Hershal'},
+            'body': 'I Wannan my chicken tenduers!!!'
         }
     ]
     return render_template('index.html', title='Home', user=user, posts=posts)
